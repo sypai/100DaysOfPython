@@ -15,8 +15,8 @@ password_length = letters_count + numbers_count + symbols_count
 password = ""
 
 current_letter_count = 0
-current_symbol_count = 0
 current_number_count = 0
+current_symbol_count = 0
 
 for _ in range(password_length):
     set_index = random.randint(0, 2)
@@ -26,29 +26,33 @@ for _ in range(password_length):
             set_index = random.randint(1, 2)
         else:
             set_type_index = random.randint(0, 51)
-            current_letter_count += 1
 
-    elif set_index == 1: # Numbers
+    if set_index == 1:  # Numbers
         if current_number_count >= numbers_count:
-            if current_letter_count > letters_count:
+            if current_letter_count >= letters_count:
                 set_index = 2
             else:
                 temp = [0, 2]
                 set_index = temp[random.randint(0, 1)]
         else:
             set_type_index = random.randint(0, 9)
-            current_number_count += 1
 
-    elif set_index == 2:  # Symbols
+    if set_index == 2:  # Symbols
         if current_symbol_count >= symbols_count:
-            if current_letter_count > letters_count:
+            if current_letter_count >= letters_count:
                 set_index = 1
             else:
                 temp = [0, 1]
                 set_index = temp[random.randint(0, 1)]
         else:
             set_type_index = random.randint(0, 8)
-            current_symbol_count += 1
+
+    if set_index == 0:
+        current_letter_count += 1
+    elif set_index == 1:
+        current_number_count += 1
+    elif set_index == 2:
+        current_symbol_count += 1
 
     password += character_set[set_index][set_type_index]
 
