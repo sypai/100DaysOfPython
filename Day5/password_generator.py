@@ -63,4 +63,3 @@ print("==============================================================\n")
 
 print(f"{current_letter_count} Letters, {current_symbol_count} symbols"
       f" and {current_number_count} numbers")
-
