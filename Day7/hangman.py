@@ -19,7 +19,7 @@ print("GAME RULES:"
       "\n:: The game begins with a hanging rope, each wrong guess hangs a part of our man"
       "\n:: Make your guesses right else the man hangs!")
 
-print(f"\n\t{stages[-1]}")
+print(f'\n\t{stages[-1]}')
 
 for char in blank_list:
     print(char, end=" ")
@@ -32,12 +32,15 @@ while True:
     flag = False
     for letter in chosen_word:
         if letter == guess:
+            if not blank_list[idx] == '__':
+                print('You have already guessed ', guess)
             blank_list[idx] = letter
             flag = True
         idx += 1
 
     if not flag:
         lives -= 1
+        print(f'Your guess "{guess}" is not in the word. You lose a life.')
         print(stages[lives])
 
     if lives == 0:
