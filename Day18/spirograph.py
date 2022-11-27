@@ -6,7 +6,7 @@ screen = Screen()
 
 
 t.speed(0)
-# t.width(2)
+t.width(1)
 
 screen.colormode(255)
 
