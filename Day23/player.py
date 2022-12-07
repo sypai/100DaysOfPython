@@ -12,13 +12,16 @@ class Player(Turtle):
         
     def move(self):
         self.fd(self.steps)
+
+    def level_up(self):
+        self.goto(0, -270)
     
 
 class ScoreBoard(Turtle):
     def __init__(self):
         super().__init__()
         self.hideturtle()
-        self.points = 0
+        self.points = 1
         self.score()
         self.draw_track()
     
@@ -51,4 +54,9 @@ class ScoreBoard(Turtle):
         self.pd()
         self.goto(300, 250)
 
+    def level_up(self):
+        self.points += 1
+        self.clear()
+        self.draw_track()
+        self.score()
     
