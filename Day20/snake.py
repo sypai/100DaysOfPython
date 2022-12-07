@@ -15,7 +15,7 @@ class Snake:
     def manifest(self, position):
         if len(self.snake) < 1:
             cell = Turtle(shape="triangle")
-            cell.color("#F0E68C")
+            cell.color("#808000")
         else:
             cell = Turtle(shape="square")
             cell.color("#eeeeee")    

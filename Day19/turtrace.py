@@ -6,7 +6,7 @@ screen = Screen()
 screen.setup(width=1200, height=800)
 screen.bgcolor("#E6E6FA")
 screen.title("Welcome to Turtle Racing")
-user_bet = screen.textinput("Turtle Racing: VIBGYexiOR", "Which color are you placing your bet on?")
+user_bet = screen.textinput("Turtle Racing: VIBGYOR", "Which color are you placing your bet on?")
 
 turtles = []
 colors = ["violet", "indigo", "blue", "green", "yellow", "orange", "red"]
