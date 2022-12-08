@@ -40,6 +40,7 @@ while game_is_on:
     # Detect snake's collision with the wall
     if s.head.xcor() > 320 or s.head.xcor() < -320 or s.head.ycor() > 320 or s.head.ycor() < -320:
         txt.game_over()
+        txt.high_scored()
         game_is_on = False
     
     # Detect snake's collision with itself
@@ -50,6 +51,7 @@ while game_is_on:
             pass
         elif s.head.distance(cell) < 10:
             txt.game_over()
+            txt.high_scored()
             game_is_on = False
 
 screen.exitonclick()

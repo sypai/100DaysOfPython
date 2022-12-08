@@ -59,4 +59,9 @@ class ScoreBoard(Turtle):
         self.clear()
         self.draw_track()
         self.score()
+
+    def game_over(self):
+        self.pu()
+        self.goto(0, 0)
+        self.write("GAME OVER", align="center", font=('Courier', 28, 'bold'))
     
