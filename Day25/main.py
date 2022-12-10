@@ -1,15 +1,45 @@
-# Importing CSV Data from file
-import csv #LOL
+import pandas
 
-with open('weather_data.csv') as file:
-    data = csv.reader(file)
-    temp_on_days = {}
-    i = 0
-    for row in data:
-        if i == 0:
-            i += 1
-            continue
-        temp_on_days[row[0]] = int(row[1])
-    print(temp_on_days)
+# Reading csv file using pandas
+data = pandas.read_csv('weather_data.csv')
 
- 
+# print(data)
+
+# ### Getting average temperature
+
+# # Method 1
+# temp_list = data["temp"].to_list()
+# avg = sum(temp_list)/len(temp_list)
+# print(avg)
+
+# # Method 2
+# print(data['temp'].mean())
+
+# ### Get Maximum Temp
+
+# # Using pandas series' method
+# print(data['temp'].max())
+
+# ### Selecting a column
+# data['temp']
+# data.temp
+
+# ### Selecting a row
+# print(data[data.day == 'Monday'])
+
+# ## Get the row where temp is maximum
+# print(data[data.temp == data.temp.max()])
+
+# ## Get Monday's temperature in Fahrenheit
+# monday = data[data.day == 'Monday']
+# print(monday.temp)
+
+# Creating a data frame from Scratch
+my_dict = {
+    'Name': ['Rohit', 'Suyash', 'Utkarsh'],
+    'Age':[24, 25, 22],
+    'Status': ['Relationship', 'Single', 'Single'] 
+}
+
+frame = pandas.DataFrame(my_dict)
+frame.to_csv('age.csv')
