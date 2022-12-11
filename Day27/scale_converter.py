@@ -27,16 +27,16 @@ label3.config(padx=10, pady=20)
 
 #Radiobutton
 def radio1_used():
-    if flag == 1:
-        flag = 0
+    global flag
+    flag = 0
     radiobutton1.config(variable=radio_state)
     radiobutton1.config(variable=radio_state)
     label1.config(text="Kilograms", font=("Roboto", 12, 'bold'))
     label3.config(text='0 Pounds', font=("Roboto", 12, 'bold'))
 
 def radio2_used():
-    if flag == 0:
-        flag = 1
+    global flag
+    flag = 1
     radiobutton2.config(variable=radio_state)
     radiobutton1.config(variable=radio_state)
     label1.config(text="Pounds", font=("Roboto", 12, 'bold'))
