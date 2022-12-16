@@ -30,16 +30,16 @@ data = pandas.read_csv('weather_data.csv')
 # ## Get the row where temp is maximum
 # print(data[data.temp == data.temp.max()])
 
-# ## Get Monday's temperature in Fahrenheit
-# monday = data[data.day == 'Monday']
-# print(monday.temp)
+## Get Monday's temperature in Fahrenheit
+monday = data[data.day == 'Monday']
+print(monday.temp)
 
 # Creating a data frame from Scratch
-my_dict = {
-    'Name': ['Rohit', 'Suyash', 'Utkarsh'],
-    'Age':[24, 25, 22],
-    'Status': ['Relationship', 'Single', 'Single'] 
-}
+# my_dict = {
+#     'Name': ['Rohit', 'Suyash', 'Utkarsh'],
+#     'Age':[24, 25, 22],
+#     'Status': ['Relationship', 'Single', 'Single'] 
+# }
 
-frame = pandas.DataFrame(my_dict)
-frame.to_csv('age.csv')
+# frame = pandas.DataFrame(my_dict)
+# frame.to_csv('age.csv')

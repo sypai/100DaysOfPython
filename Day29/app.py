@@ -1,13 +1,15 @@
 from tkinter import *
 from tkinter import messagebox
 import pandas
+import random
+import json
 
 # Constants
 sy_font='Crimson Text'
 size_font=12
 WHITE = '#EEEEEE'
 BLUE = '#222831'
-
+virgin = None
 
 # -------------------------------------------------------------------------Password Generator-------------------------------------
 
@@ -15,16 +17,72 @@ BLUE = '#222831'
 # website, username, password
 # -------------------------------------------------------------------------Save Password------------------------------------------
 def generate_password():
-    pass
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+    character_set = [letters, numbers, symbols]  # Set Index
+
+    # letters_count = random.randint(2, 5)
+    # symbols_count = random.randint(2, 5)
+    # numbers_count = random.randint(2, 5)
+    letters_count = 5
+    symbols_count = 5
+    numbers_count = 5
+
+    password_length = letters_count + numbers_count + symbols_count
+    password = ""
+
+    current_letter_count = 0
+    current_number_count = 0
+    current_symbol_count = 0
+
+    for _ in range(password_length):
+        set_index = random.randint(0, 2)
+
+        if set_index == 0:  # Letters
+            if current_letter_count >= letters_count:
+                set_index = random.randint(1, 2)
+
+        if set_index == 1:  # Numbers
+            if current_number_count >= numbers_count:
+                if current_letter_count >= letters_count:
+                    set_index = 2
+                else:
+                    temp = [0, 2]
+                    set_index = temp[random.randint(0, 1)]
+
+        if set_index == 2:  # Symbols
+            if current_symbol_count >= symbols_count:
+                if current_letter_count >= letters_count:
+                    set_index = 1
+                else:
+                    if current_number_count >= numbers_count:
+                        set_index = 0
+                    else:
+                        temp = [0, 1]
+                        set_index = temp[random.randint(0, 1)]
+
+        if set_index == 0:
+            current_letter_count += 1
+            set_type_index = random.randint(0, 51)
+        elif set_index == 1:
+            current_number_count += 1
+            set_type_index = random.randint(0, 9)
+        elif set_index == 2:
+            current_symbol_count += 1
+            set_type_index = random.randint(0, 8)
+
+        password += character_set[set_index][set_type_index]
+    e3.delete(0, END)
+    e3.insert(END, string=password)
 
 def update_password():
     pass
 
-def save_password(website, username, password, empty_file=False):
-    if empty_file:
-        with open('data.csv', mode='w') as file:
-            file.write('website,username,password')
-
+def save_password():
+    website = e1.get()
+    username = e2.get()
+    password = e3.get()
     # Ask User, to check input data and confirm if data is to 
     # be saved
     confirm = messagebox.askokcancel(
@@ -37,20 +95,25 @@ def save_password(website, username, password, empty_file=False):
             'username': [username],
             'password': [password]
         }
-
-        pandas.DataFrame(data).to_csv('data.csv', mode='a', index=False, header=False)
         
         messagebox.showinfo(title='sylock: Password Manager', message="Beep. Boop. Beep. Your Password has been saved successfully.")
-
+        e1.delete(0, END)
+        e2.delete(0, END)
+        e3.delete(0, END)
 
 def check_password():
     website = e1.get()
     username = e2.get()
     password = e3.get()
+    
     try:
-        data = pandas.read_csv('data.csv')
+        with open('data.json') as open_file:
+            data = json.load(open_file)
+            save_password(website, username, password, empty_file=True)
     
     except:
+        global virgin
+        virgin = True
         save_password(website, username, password, empty_file=True)
         
     else:
@@ -59,10 +122,13 @@ def check_password():
             # If Current 'Website' is in DB,
             # check if the username is same, if it is
             # ask user if they want to update, if yes, go ahead. 
-            if data[data.website == website].username == username:
-                update_password(website, username, password)
+            # check = data[data.website == website].username == username
+            # if check
+            # if data[data.website == website].username == username:
+            #     # update_password(website, username, password)
+            #     print('Do you want to update the password?')
+            pass
             
-    
 
 # -------------------------------------------------------------------------UI SETUP-----------------------------------------------
 
@@ -124,7 +190,7 @@ e3.grid(row=5, column=1)
 
 # 'Generate Password' Button - b3
 b3 = Button()
-b3.config(text='Generate Password', bg=BLUE, fg=WHITE, bd='5')
+b3.config(text='Generate Password', bg=BLUE, fg=WHITE, bd='5', command=generate_password)
 b3.grid(row=5, column=2)
 
 filler3 = Label()
