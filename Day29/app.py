@@ -83,51 +83,50 @@ def save_password():
     website = e1.get()
     username = e2.get()
     password = e3.get()
-    # Ask User, to check input data and confirm if data is to 
-    # be saved
-    confirm = messagebox.askokcancel(
-        title=website,
-        message=f'Here are the details entered:\n\nUsername/Email: {username}\n\nPassword: {password}\n\nAre you sure?'
-    )
-    if confirm:
-        data = {
-            'website': [website],
-            'username': [username],
-            'password': [password]
-        }
-        
-        messagebox.showinfo(title='sylock: Password Manager', message="Beep. Boop. Beep. Your Password has been saved successfully.")
-        e1.delete(0, END)
-        e2.delete(0, END)
-        e3.delete(0, END)
-
-def check_password():
-    website = e1.get()
-    username = e2.get()
-    password = e3.get()
     
-    try:
-        with open('data.json') as open_file:
-            data = json.load(open_file)
-            save_password(website, username, password, empty_file=True)
+    if len(website) == 0 or len(password) == 0 or len(username) == 0:
+        messagebox.showinfo(
+            title="Oops", 
+            message="Please make sure you haven't left any fields empty."
+            )
     
-    except:
-        global virgin
-        virgin = True
-        save_password(website, username, password, empty_file=True)
-        
     else:
-        website_list = data['website'].to_list()
-        if website in website_list: 
-            # If Current 'Website' is in DB,
-            # check if the username is same, if it is
-            # ask user if they want to update, if yes, go ahead. 
-            # check = data[data.website == website].username == username
-            # if check
-            # if data[data.website == website].username == username:
-            #     # update_password(website, username, password)
-            #     print('Do you want to update the password?')
-            pass
+        # Ask User, to check input data and confirm if data is to 
+        # be saved
+        confirm = messagebox.askokcancel(
+            title=website,
+            message=f'Here are the details entered:\n\nUsername/Email: {username}\n\nPassword: {password}\n\nAre you sure?'
+        )
+        if confirm:
+            new_data = {
+                website :{
+                    "username": username,
+                    "password": password
+                }
+            }
+            
+            try:
+                with open('data.json', "r") as data_file:
+                    # Read Existing data in the file
+                    existing_data = json.load(data_file)
+            
+            except FileNotFoundError:
+                with open('data.json', 'w') as data_file:
+                    # If file doesn't exist, create a new file and the new data
+                    json.dump(new_data, data_file, indent=4)
+
+            else:
+                # If there's a file, update the existing data with new data
+                existing_data.update(new_data)
+                with open('data.json', 'w') as data_file:
+                    json.dump(existing_data, data_file, indent=4)
+
+            finally:
+                messagebox.showinfo(title='sylock: Password Manager', message="Beep. Boop. Beep. Your Password has been saved successfully.")
+                e1.delete(0, END)
+                e2.delete(0, END)
+                e3.delete(0, END)
+
             
 
 # -------------------------------------------------------------------------UI SETUP-----------------------------------------------
@@ -200,7 +199,7 @@ filler3.grid(row=6, column=0, columnspan=3)
 ############# Row 4
 # 'Add Password' Button - b4
 b3 = Button()
-b3.config(width=49, text='Add Password', bg=BLUE, fg=WHITE, bd='5', command=check_password)
+b3.config(width=49, text='Add Password', bg=BLUE, fg=WHITE, bd='5', command=save_password)
 b3.grid(row=7, column=1, columnspan=2)
 
 window.mainloop()
