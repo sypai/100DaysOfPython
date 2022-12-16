@@ -6,7 +6,7 @@ import json
 
 # Constants
 sy_font='Crimson Text'
-size_font=12
+size_font=13
 WHITE = '#EEEEEE'
 BLUE = '#222831'
 virgin = None
@@ -115,6 +115,11 @@ def save_password():
                     # If file doesn't exist, create a new file and the new data
                     json.dump(new_data, data_file, indent=4)
 
+            except json.decoder.JSONDecodeError:
+                with open('data.json', 'w') as data_file:
+                    # If file doesn't exist, create a new file and the new data
+                    json.dump(new_data, data_file, indent=4)
+        
             else:
                 # If there's a file, update the existing data with new data
                 existing_data.update(new_data)
@@ -127,7 +132,53 @@ def save_password():
                 e2.delete(0, END)
                 e3.delete(0, END)
 
-            
+def search_password():
+    website = e1.get()
+
+    if len(website) == 0:
+        messagebox.showinfo(
+            title="Oops", 
+            message="Which Website do you want to search the password for? Please enter name of the website."
+            )
+    
+    else:
+        try:
+            with open('data.json', 'r') as open_file:
+                existing_data = json.load(open_file)
+                # Look for the key, 'website'
+                password = existing_data[website]['password']
+                username = existing_data[website]['username']
+        
+        except FileNotFoundError:
+            messagebox.showinfo(
+                title="Oops", 
+                message="Looks like you are new! You have no saved passwords."
+                )
+
+        except json.decoder.JSONDecodeError:
+            messagebox.showinfo(
+                title="Oops", 
+                message="Looks like you are new! You have no saved passwords."
+                )
+        
+        except KeyError:
+            messagebox.showinfo(
+                title="Oops", 
+                message=f"You have no saved passwords for {website}."
+                )
+
+        else:
+            messagebox.showinfo(
+                title=f"{website}",
+                message=f"Here's your data for {website}\n\nUsername/Email: {username}\n\nPassword: {password}\n\nPassword has been copied to the clipboard"
+            )
+
+        finally:
+            e1.delete(0, END)
+            e2.delete(0, END)
+            e3.delete(0, END)
+
+
 
 # -------------------------------------------------------------------------UI SETUP-----------------------------------------------
 
@@ -152,9 +203,18 @@ l1.grid(row=1, column=0)
 
 # 'Website' Entry - e1
 e1 = Entry()
-e1.config(width=55)
+e1.config(width=30, font=(sy_font, size_font))
 e1.focus()
-e1.grid(row=1, column=1, columnspan=2)
+e1.grid(row=1, column=1)
+
+filler0 = Label()
+filler0.config(bg=WHITE, width=2)
+filler0.grid(row=1, column=2)
+
+# 'Search Button' Button - b1
+b1 = Button(width=14)
+b1.config(text='Search', bg=BLUE, fg=WHITE, bd='5', command=search_password)
+b1.grid(row=1, column=3)
 
 filler1 = Label()
 filler1.config(bg=WHITE)
@@ -168,8 +228,8 @@ l2.grid(row=3, column=0)
 
 # 'Email/Username' Entry - e2
 e2 = Entry()
-e2.config(width=55)
-e2.grid(row=3, column=1, columnspan=2)
+e2.config(width=30, font=(sy_font, size_font))
+e2.grid(row=3, column=1)
 
 
 filler2 = Label()
@@ -184,13 +244,17 @@ l3.grid(row=5, column=0)
 
 # 'Password' Entry - e3
 e3 = Entry()
-e3.config(width=34)
+e3.config(width=30, font=(sy_font, size_font))
 e3.grid(row=5, column=1)
+
+filler4 = Label()
+filler4.config(bg=WHITE, width=2)
+filler4.grid(row=5, column=2)
 
 # 'Generate Password' Button - b3
 b3 = Button()
 b3.config(text='Generate Password', bg=BLUE, fg=WHITE, bd='5', command=generate_password)
-b3.grid(row=5, column=2)
+b3.grid(row=5, column=3)
 
 filler3 = Label()
 filler3.config(bg=WHITE)
@@ -200,6 +264,6 @@ filler3.grid(row=6, column=0, columnspan=3)
 # 'Add Password' Button - b4
 b3 = Button()
 b3.config(width=49, text='Add Password', bg=BLUE, fg=WHITE, bd='5', command=save_password)
-b3.grid(row=7, column=1, columnspan=2)
+b3.grid(row=7, column=0, columnspan=4)
 
 window.mainloop()
