@@ -77,6 +77,7 @@ def generate_password():
     e3.insert(END, string=password)
 
 def update_password():
+    # TODO: Think about Duplicate entries, different usernames for same websites
     pass
 
 def save_password():
