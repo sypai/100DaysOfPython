@@ -5,8 +5,8 @@ import math
 import smtplib 
 
 # Constants
-MY_LAT = 13.038031
-MY_LONG = 77.617104
+MY_LAT = 44.038031
+MY_LONG = 104.617104
 MY_EMAIL = 'suyashbajpai.web@gmail.com'
 MY_PASSWORD = 'qoxvlsvsbdtpliau'
 address = 'smtp.gmail.com'
@@ -65,18 +65,18 @@ def is_night():
         return True
     
 def notify():
-    MSG = f'Subject:ISS is just crossing you by!\n\nHey, Suyash. \nStep out! ISS is over your place!\nWoohoo!'
+    MSG = f'Subject:ISS is just crossing you by!\n\nHey, Shaan. \nStep out! ISS is over your place!\nWoohoo!'
     with smtplib.SMTP(address) as connection:
         connection.starttls()
         connection.login(user=MY_EMAIL, password=MY_PASSWORD)
         connection.sendmail(
             from_addr=MY_EMAIL,
-            to_addrs='suyashbajpai.dev@gmail.com',
+            to_addrs='shaanbiswas8@gmail.com',
             message=MSG
         )
+    print('sent')
 
 while True:
-    sleep(60)
     if is_overhead() and is_night():
         notify()
 
